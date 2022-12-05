@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.mat-autocomplete-panel {
+    outline: 1px solid violet;
+  
+  
+  mat-option {
+    outline: 1px solid red;
+    
+  }
+}
+  

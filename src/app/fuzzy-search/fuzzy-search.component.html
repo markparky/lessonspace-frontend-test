@@ -1,0 +1,26 @@
+<form class="fuzzy-search__form">
+  <mat-form-field class="fuzzy-search__form-field" appearance="outline">
+    <span matPrefix><mat-icon fontSet="fas" fontIcon="fa-search"></mat-icon></span>
+    <input #search placeholder="Search products..." type="text" aria-label="Products" matInput [matAutocomplete]="auto" />
+
+    <button mat-icon-button matSuffix class="status-overview-filters__down-icon">
+      <mat-icon fontSet="fas" fontIcon="fa-close"></mat-icon>
+    </button>
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of options | async" [value]="option.title">
+        <div class="search-option">
+            <img [src]="option.image" />
+          <div class="search-option__container">
+            <span class="search-option__item" [innerHTML]="option.html"></span>
+            <small class="search-option__item" > {{ option.brand }}</small>
+          </div>
+          <div class="search-option__container">
+            <span class="search-option__item"> {{ option.price }}</span>
+            <span class="search-option__item"> {{ option.rating }}</span>
+          </div>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
