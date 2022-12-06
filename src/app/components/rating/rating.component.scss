@@ -1,0 +1,16 @@
+@import '../../../theme';
+
+.star {
+  margin: 0px 0px;
+  color: $sand;
+  display: inline-block;
+
+  &--gold {
+    color: $orange;
+  }
+
+  .mat-icon {
+    width: 17px;
+    height: 17px;
+  }
+}

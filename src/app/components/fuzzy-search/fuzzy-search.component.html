@@ -1,0 +1,45 @@
+<form class="fuzzy-search__form">
+  <mat-form-field
+    class="fuzzy-search__form-field"
+    [ngClass]="{ 'fuzzy-search__form-field--loading': loading, 'fuzzy-search__form-field--loaded': search.value.length > 0 }"
+    appearance="outline"
+  >
+    <span matPrefix><mat-icon>search</mat-icon></span>
+    <input
+      #search
+      class="fuzzy-search__form-field-input"
+      placeholder="Search products..."
+      type="text"
+      aria-label="Products"
+      matInput
+      [matAutocomplete]="auto"
+    />
+
+    <mat-icon *ngIf="productSelected" matSuffix (click)="clearInput()" class="fuzzy-search__form-field-clear">close</mat-icon>
+
+    <mat-spinner matSuffix [diameter]="18" *ngIf="loading"></mat-spinner>
+
+    <mat-autocomplete #auto="matAutocomplete" showPanel="search.value.length > 0">
+      <mat-option *ngFor="let option of options | async" [value]="option.title + ' ' + option.brand">
+        <div class="search-option" (click)="selectProduct(option)">
+          <img [src]="option.image" />
+          <div class="search-option__container">
+            <span class="search-option__item search-option__item-title" [innerHTML]="option.html"></span>
+            <small class="search-option__item search-option__item-brand"> {{ option.brand }}</small>
+          </div>
+          <div class="search-option__container">
+            <span class="search-option__item search-option__item-price"> {{ option.price | currency: 'USD' }}</span>
+            <span class="search-option__item search-option__item-rating"> <app-rating [rating]="option.rating"></app-rating></span>
+          </div>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <div class="fuzzy-search__form-field-error" *ngIf="showError">
+    <div>
+      <b>Error</b>
+      <p>Something went wrong.</p>
+      <p>Please search again.</p>
+    </div>
+  </div>
+</form>

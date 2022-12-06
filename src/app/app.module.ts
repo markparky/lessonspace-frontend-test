@@ -5,14 +5,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { FuzzySearchComponent } from './fuzzy-search/fuzzy-search.component';
-import { MaterialModule } from './material/material.module';
-import { ProductService } from './product/product.service';
+import { FuzzySearchComponent, RatingComponent } from './components';
+import { MaterialModule } from '@material/material.module';
+import { ProductService } from './services';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FuzzySearchComponent
+    FuzzySearchComponent,
+    RatingComponent,
   ],
   imports: [
     BrowserModule,

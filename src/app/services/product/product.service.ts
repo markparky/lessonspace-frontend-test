@@ -1,15 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, switchMap as rxSwitchMap, map as rxMap, combineLatest } from 'rxjs';
+import { Subject, Observable, switchMap as rxSwitchMap } from 'rxjs';
 
 const BASE_URL = 'https://dummyjson.com/products/';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
-  private readonly searchString$ = new BehaviorSubject<string>('one');
+  private readonly searchString$ = new Subject<string>();
 
   constructor(private httpClient: HttpClient) {}
 
@@ -24,7 +23,4 @@ export class ProductService {
   searchResults(): Observable<any> {
     return this.getSearchString.pipe(rxSwitchMap((searchString) => this.httpClient.get(`${BASE_URL}search?q=${searchString}`)));
   }
-
-
-
 }
