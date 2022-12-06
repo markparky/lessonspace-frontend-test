@@ -13,6 +13,7 @@ import {
 } from 'rxjs';
 import { ProductService } from '../../services';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-fuzzy-search',
@@ -20,18 +21,14 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
   styleUrls: ['./fuzzy-search.component.scss'],
 })
 export class FuzzySearchComponent implements OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
   @ViewChild('search', { static: false }) searchInput!: ElementRef;
   @ViewChild(MatAutocompleteTrigger) autocompleteTrigger: MatAutocompleteTrigger;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  closeAutocomplete() {
-    this.autocompleteTrigger.closePanel();
-  }
   public readonly options: Observable<any> = this.initProductData();
   public loading: boolean = false;
   public showError: boolean = false;
-  public productSelected: boolean = false;
-  filteredOptions: Observable<string[]>;
+  public product: Product;
 
   constructor(private productService: ProductService) {}
 
@@ -60,10 +57,15 @@ export class FuzzySearchComponent implements OnDestroy {
       .subscribe();
   }
 
+  private closeAutocomplete() {
+    this.autocompleteTrigger.closePanel();
+  }
+
   private initProductData(): Observable<any> {
     return this.productService.searchResults().pipe(
       rxMap((searchResults) => {
         var products = go(this.searchInput.nativeElement.value, searchResults.products, { key: 'title' }).map((r) => ({
+          id: r.obj['id'],
           title: r.obj['title'],
           html: highlight(r),
           brand: r.obj['brand'],
@@ -80,11 +82,12 @@ export class FuzzySearchComponent implements OnDestroy {
   }
 
   public clearInput() {
-    this.productSelected = false;
+    this.product = null;
     this.searchInput.nativeElement.value = '';
+    this.closeAutocomplete();
   }
 
-  public selectProduct() {
-    this.productSelected = true;
+  public selectProduct(product:Product) {
+    this.product = product;
   }
 }
